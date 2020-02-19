@@ -21,12 +21,6 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  friends: {
-    type: Array
-  },
-  posts: {
-    type: Array
-  }
 });
 
 module.exports = User = mongoose.model('users', UserSchema);

@@ -7,13 +7,13 @@ const PostSchema = new Schema({
   postedBy: {
     type: ObjectId,
     required: true,
-    ref: "User"
+    ref: "users"
   },
   comments: {
     text: String,
     postedBy: {
       type: ObjectId,
-      ref: "User"
+      ref: "user"
     }
   },
   text: String,
