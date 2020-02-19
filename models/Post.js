@@ -21,7 +21,7 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  //need to convert this to a moment time
+  //need to convert this to a moment time? 
   date: {
     type: Date,
     default: Date.now
