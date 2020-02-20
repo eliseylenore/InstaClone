@@ -3,6 +3,9 @@ const router = express.Router();
 const passport = require("passport");
 const Profile = require("../../models/Profile");
 
+//Load input validation
+const validateRegisterInput = require("../../validation/register");
+
 // @route   POST api/profile
 // @desc    Create or edit user profile
 // @access  private
@@ -41,6 +44,26 @@ router.post(
         });
       }
     });
+  }
+);
+
+// @route   GET api/profile
+// @desc    View user profile
+// @access  private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        if (!profile) {
+          errors.noprofile = "There is no profile for this user";
+        }
+        res.json(profile);
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 

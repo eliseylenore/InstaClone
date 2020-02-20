@@ -18,7 +18,8 @@ const UserSchema = new Schema({
     type: String
   },
   phone: {
-    type: Number
+    type: String,
+    max: 10,
   },
   gender: {
     type: String
