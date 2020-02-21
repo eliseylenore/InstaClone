@@ -6,6 +6,26 @@ const Profile = require("../../models/Profile");
 //Load input validation
 const validateRegisterInput = require("../../validation/register");
 
+// @route   GET api/profile
+// @desc    View user profile
+// @access  private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        if (!profile) {
+          errors.noprofile = "There is no profile for this user";
+        }
+        res.json(profile);
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 // @route   POST api/profile
 // @desc    Create or edit user profile
 // @access  private
@@ -47,24 +67,52 @@ router.post(
   }
 );
 
-// @route   GET api/profile
-// @desc    View user profile
-// @access  private
-router.get(
+// @route   GET api/profile/handle/:handle
+// @desc    Get user profile from handle
+// @access  public
+router.get("/handle/:handle", (req, res) => {
+  errors = {};
+  Profile.findOne({ handle: req.params.handle })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json(err));
+});
+
+// @route   GET api/profile/user/:user_id
+// @desc    Get user profile from user id
+// @access  public
+router.get("/user/:user_id", (req, res) => {
+  errors = {};
+  Profile.findOne({ user: req.params.user_id })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      }
+      res.json(profile);
+    })
+    .catch(err => res.status(404).json(err));
+});
+
+// @route   DELETE api/profile
+// @desc    Delete user and profile
+// @access  Private
+router.delete(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const errors = {};
-
-    Profile.findOne({ user: req.user.id })
-      .then(profile => {
-        if (!profile) {
-          errors.noprofile = "There is no profile for this user";
-        }
-        res.json(profile);
-      })
-      .catch(err => res.status(404).json(err));
+    Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+      User.findOneAndRemove({ _id: req.user.id }).then(() =>
+        res.json({ success: true })
+      );
+    });
   }
 );
-
 module.exports = router;
