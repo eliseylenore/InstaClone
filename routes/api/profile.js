@@ -38,9 +38,9 @@ router.post(
     profileFields.user = req.user.id;
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.website) profileFields.website = req.body.website;
-    if (req.body.bio) profileFields.bio = req.body.website;
-    if (req.body.phone) profileFields.phone = req.body.website;
-    if (req.body.gender) profileFields.gender = req.body.website;
+    if (req.body.bio) profileFields.bio = req.body.bio;
+    if (req.body.phone) profileFields.phone = req.body.phone;
+    if (req.body.gender) profileFields.gender = req.body.gender;
 
     Profile.findOne({ handle: profileFields.handle }).then(profile => {
       if (profile) {

@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const app = express();
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
+const posts = require("./routes/api/posts");
 const passport = require("passport");
 
 const bodyparser = require("body-parser");
-const posts = require("./routes/api/posts");
 
 // Body parser middleware
 app.use(bodyparser.urlencoded({ extended: false }));
