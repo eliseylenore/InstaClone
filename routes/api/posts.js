@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const Post = require("../../models/Post");
+const isEmpty = require("../../validation/is-empty");
 
 router.get("/test", (req, res) =>
   res.json({
@@ -18,11 +19,11 @@ router.get("/:user_id", (req, res) => {
   Post.find({ postedBy: req.params.user_id })
     .sort({ date: -1 })
     .then(posts => {
-      console.log(posts[0]);
+      if (isEmpty(posts)) {
+        errors.noposts = "There are no posts for this user";
+        res.status(404).json(errors);
+      }
       res.json(posts);
-
-      // errors.noposts = "There are no posts for this user";
-      // res.status(404).json(errors);
     });
 });
 
