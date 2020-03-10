@@ -12,16 +12,17 @@ router.get("/test", (req, res) =>
 // @route   GET api/posts/:user_id
 // @desc    Grab all posts from a certain user
 // @access  Public
-// FOR SOME REASON THIS IS RETURNING EMPTY OBJECT...
 router.get("/:user_id", (req, res) => {
   errors = {};
-  Post.find({ postedBy: req.params.id })
+
+  Post.find({ postedBy: req.params.user_id })
     .sort({ date: -1 })
     .then(posts => {
+      console.log(posts[0]);
       res.json(posts);
 
-      errors.noposts = "There are no posts for this user";
-      res.status(404).json(errors);
+      // errors.noposts = "There are no posts for this user";
+      // res.status(404).json(errors);
     });
 });
 
