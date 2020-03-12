@@ -1,21 +1,22 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Navbar extends Component {
   render() {
     return (
-      <nav class="navbar navbar-expand-sm navbar-light bg-light mb-4 justify-content-between">
-        <a className="navbar-brand" href="landing.html">
+      <nav className="navbar navbar-expand-sm navbar-light bg-light mb-4 justify-content-between">
+        <Link className="navbar-brand" to="/">
           InstaClone
-        </a>
-        <form class="form-inline ">
+        </Link>
+        <form className="form-inline ">
           <input
-            class="form-control mr-sm-2"
+            className="form-control mr-sm-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
           />
 
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
             Search
           </button>
         </form>
@@ -31,14 +32,14 @@ class Navbar extends Component {
         <div className="collapse navbar-collapse" id="mobile-nav">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link" href="register.html">
+              <Link className="nav-link" to="/register">
                 Sign Up
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="login.html">
+              <Link className="nav-link" to="/login">
                 Login
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
