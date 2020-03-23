@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 import classnames from "classnames";
 import { registerUser } from "../../actions/authActions";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class Register extends Component {
   constructor() {
@@ -35,29 +34,20 @@ class Register extends Component {
     };
 
     this.props.registerUser(newUser);
-
-    // axios
-    //   .post("/api/users/register", newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(err =>
-    //     this.setState({
-    //       errors: err.response.data
-    //     })
-    //   );
   }
 
   render() {
-    const { errors } = this.state;
     const { user } = this.props.auth;
+    const { errors } = this.props;
     return (
       <div className="register">
-        {user && user.name }
+        {user && user.name}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Sign Up</h1>
               <p className="lead text-center">Create your InstaClone account</p>
-              <form novalidate onSubmit={this.onSubmit}>
+              <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
@@ -134,11 +124,13 @@ class Register extends Component {
 // make sure that these two types are available before registerUser action is loaded
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-}
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(mapStateToProps, { registerUser })(Register);
