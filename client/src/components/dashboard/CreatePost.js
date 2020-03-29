@@ -1,12 +1,17 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import classnames from "classnames";
+import { createPost } from "../../actions/postActions";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
-export default class CreatePost extends Component {
+class CreatePost extends Component {
   constructor() {
     super();
     this.state = {
-      image: "",
+      photo: "",
       text: "",
+      date: Date.now(),
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -21,11 +26,19 @@ export default class CreatePost extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const user = {
-      email: this.state.email,
-      password: this.state.password
+    const post = {
+      photo: this.state.photo,
+      password: this.state.text,
+      date: Date.now()
     };
     console.log("submitted!");
+    this.props.createPost(post);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   render() {
@@ -38,15 +51,15 @@ export default class CreatePost extends Component {
             <input
               type="text"
               className={classnames("form-control form-control-lg", {
-                "is-invalid": errors.image
+                "is-invalid": errors.photo
               })}
-              placeholder="Image url"
-              name="image"
-              value={this.image}
+              placeholder="Photo url"
+              name="photo"
+              value={this.photo}
               onChange={this.onChange}
             />
-            {errors.image && (
-              <div className="invalid-feedback">{errors.image}</div>
+            {errors.photo && (
+              <div className="invalid-feedback">{errors.photo}</div>
             )}
             <input
               type="text"
@@ -68,3 +81,15 @@ export default class CreatePost extends Component {
     );
   }
 }
+
+// make sure that these two types are available before registerUser action is loaded
+CreatePost.propTypes = {
+  createPost: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { createPost })(withRouter(CreatePost));
